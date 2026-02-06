@@ -1,25 +1,44 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard Admin') }}
-        </h2>
+        <div>
+            <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100 leading-tight">Dashboard Admin</h2>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Kelola data master, transaksi, dan audit.</div>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100 space-y-2">
-                    <div class="font-semibold">Menu (akan diisi CRUD sesuai tugas):</div>
-                    <ul class="list-disc pl-5 text-sm text-gray-700 dark:text-gray-300">
-                        <li>CRUD User</li>
-                        <li>CRUD Alat</li>
-                        <li>CRUD Kategori</li>
-                        <li>CRUD Data Peminjaman</li>
-                        <li>CRUD Pengembalian</li>
-                        <li>Log Aktivitas</li>
-                    </ul>
-                </div>
-            </div>
+    <div class="ss-container">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <a href="{{ route('admin.users.index') }}" class="ss-card ss-card-hover p-5 block">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Master</div>
+                <div class="mt-1 text-lg font-semibold">Users</div>
+                <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">Kelola akun & role.</div>
+            </a>
+            <a href="{{ route('admin.categories.index') }}" class="ss-card ss-card-hover p-5 block">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Master</div>
+                <div class="mt-1 text-lg font-semibold">Kategori</div>
+                <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">Kelompokkan alat per jenis.</div>
+            </a>
+            <a href="{{ route('admin.tools.index') }}" class="ss-card ss-card-hover p-5 block">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Master</div>
+                <div class="mt-1 text-lg font-semibold">Alat</div>
+                <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">Data alat per unit.</div>
+            </a>
+
+            <a href="{{ route('admin.loans.index') }}" class="ss-card ss-card-hover p-5 block">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Transaksi</div>
+                <div class="mt-1 text-lg font-semibold">Peminjaman</div>
+                <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">Pantau status peminjaman.</div>
+            </a>
+            <a href="{{ route('admin.returns.index') }}" class="ss-card ss-card-hover p-5 block">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Transaksi</div>
+                <div class="mt-1 text-lg font-semibold">Pengembalian</div>
+                <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">Terima/kelola pengembalian + denda.</div>
+            </a>
+            <a href="{{ route('admin.activity-logs.index') }}" class="ss-card ss-card-hover p-5 block">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Audit</div>
+                <div class="mt-1 text-lg font-semibold">Log Aktivitas</div>
+                <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">Jejak perubahan data.</div>
+            </a>
         </div>
     </div>
 </x-app-layout>

@@ -13,10 +13,12 @@
                         <div>
                             <x-input-label for="name" value="Nama" />
                             <x-text-input id="name" name="name" value="{{ old('name') }}" class="mt-1 block w-full" required />
+                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
                         <div>
                             <x-input-label for="email" value="Email" />
                             <x-text-input id="email" type="email" name="email" value="{{ old('email') }}" class="mt-1 block w-full" required />
+                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
                         <div>
                             <x-input-label for="role" value="Role" />
@@ -25,15 +27,18 @@
                                     <option value="{{ $role->value }}" @selected(old('role', 'peminjam') === $role->value)>{{ $role->value }}</option>
                                 @endforeach
                             </select>
+                            <x-input-error :messages="$errors->get('role')" class="mt-2" />
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <x-input-label for="password" value="Password" />
                                 <x-text-input id="password" type="password" name="password" class="mt-1 block w-full" required />
+                                <x-input-error :messages="$errors->get('password')" class="mt-2" />
                             </div>
                             <div>
                                 <x-input-label for="password_confirmation" value="Konfirmasi Password" />
                                 <x-text-input id="password_confirmation" type="password" name="password_confirmation" class="mt-1 block w-full" required />
+                                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                             </div>
                         </div>
                         <div class="flex gap-3">

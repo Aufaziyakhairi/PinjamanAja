@@ -1,12 +1,18 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav x-data="{ open: false }" class="bg-transparent">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="ss-container">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        <div class="flex items-center gap-3">
+                            <x-application-logo class="block h-9 w-auto fill-current text-indigo-600" />
+                            <div class="hidden sm:block leading-tight">
+                                <div class="text-sm font-semibold text-slate-900 dark:text-slate-100">SmartSchool</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400">Peminjaman Alat</div>
+                            </div>
+                        </div>
                     </a>
                 </div>
 
@@ -64,8 +70,11 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }} <span class="text-xs text-gray-400">({{ Auth::user()->role->value ?? Auth::user()->role }})</span></div>
+                        <button class="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-slate-800/60 focus:outline-none transition">
+                            <div>
+                                <div class="leading-tight">{{ Auth::user()->name }}</div>
+                                <div class="text-xs text-slate-400">{{ Auth::user()->role->value ?? Auth::user()->role }}</div>
+                            </div>
 
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">

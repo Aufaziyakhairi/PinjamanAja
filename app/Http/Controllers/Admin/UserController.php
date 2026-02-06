@@ -9,11 +9,22 @@ use App\Support\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
 class UserController extends Controller
 {
+    /**
+     * Roles that can be assigned via Admin → Users UI.
+     *
+     * @return array<int, string>
+     */
+    private function assignableRoleValues(): array
+    {
+        return [UserRole::Petugas->value, UserRole::Peminjam->value];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -39,7 +50,7 @@ class UserController extends Controller
      */
     public function create(): View
     {
-        $roles = UserRole::cases();
+        $roles = [UserRole::Petugas, UserRole::Peminjam];
         return view('admin.users.create', compact('roles'));
     }
 
@@ -51,7 +62,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
-            'role' => ['required', 'in:admin,petugas,peminjam'],
+            'role' => ['required', Rule::in($this->assignableRoleValues())],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -80,7 +91,10 @@ class UserController extends Controller
      */
     public function edit(User $user): View
     {
-        $roles = UserRole::cases();
+        if ($user->isAdmin()) {
+            abort(403);
+        }
+        $roles = [UserRole::Petugas, UserRole::Peminjam];
         return view('admin.users.edit', compact('user', 'roles'));
     }
 
@@ -89,15 +103,22 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user): RedirectResponse
     {
-        $validated = $request->validate([
+        if ($user->isAdmin()) {
+            abort(403);
+        }
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,'.$user->id],
-            'role' => ['required', 'in:admin,petugas,peminjam'],
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
-        ]);
+        ];
+
+        $rules['role'] = ['required', Rule::in($this->assignableRoleValues())];
+
+        $validated = $request->validate($rules);
 
         $user->name = $validated['name'];
         $user->email = $validated['email'];
+
         $user->role = $validated['role'];
 
         if (!empty($validated['password'])) {
@@ -115,8 +136,8 @@ class UserController extends Controller
      */
     public function destroy(Request $request, User $user): RedirectResponse
     {
-        if ($user->id === $request->user()->id) {
-            return back()->withErrors(['user' => 'Tidak bisa menghapus akun sendiri.']);
+        if ($user->isAdmin()) {
+            abort(403);
         }
 
         ActivityLogger::log('user.deleted', $user, ['email' => $user->email]);

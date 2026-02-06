@@ -1,21 +1,27 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard Peminjam') }}
-        </h2>
+        <div>
+            <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100 leading-tight">Dashboard Peminjam</h2>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Cari alat, ajukan peminjaman, dan ajukan pengembalian.</div>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100 space-y-2">
-                    <div class="font-semibold">Menu Peminjam:</div>
-                    <ul class="list-disc pl-5 text-sm text-gray-700 dark:text-gray-300">
-                        <li>Melihat daftar alat</li>
-                        <li>Mengajukan peminjaman</li>
-                        <li>Mengembalikan alat</li>
-                    </ul>
-                </div>
+    <div class="ss-container">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <a href="{{ route('peminjam.tools.index') }}" class="ss-card ss-card-hover p-5 block">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Menu</div>
+                <div class="mt-1 text-lg font-semibold">Daftar Alat</div>
+                <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">Lihat alat yang tersedia.</div>
+            </a>
+            <a href="{{ route('peminjam.loans.index') }}" class="ss-card ss-card-hover p-5 block">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Menu</div>
+                <div class="mt-1 text-lg font-semibold">Peminjaman Saya</div>
+                <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">Ajukan & pantau status.</div>
+            </a>
+            <div class="ss-card p-5">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Tips</div>
+                <div class="mt-1 text-lg font-semibold">Perhatikan Jatuh Tempo</div>
+                <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">Jika terlambat, denda dihitung saat pengembalian diterima.</div>
             </div>
         </div>
     </div>

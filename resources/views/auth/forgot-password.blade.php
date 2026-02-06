@@ -1,6 +1,11 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+    <div class="mb-6">
+        <h1 class="text-xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+            Lupa Password
+        </h1>
+        <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">
+            Masukkan email kamu, lalu kami kirimkan tautan untuk reset password.
+        </p>
     </div>
 
     <!-- Session Status -->

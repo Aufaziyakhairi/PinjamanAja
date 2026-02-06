@@ -1,22 +1,28 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard Petugas') }}
-        </h2>
+        <div>
+            <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100 leading-tight">Dashboard Petugas</h2>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Proses persetujuan, pengembalian, dan laporan.</div>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100 space-y-2">
-                    <div class="font-semibold">Menu Petugas:</div>
-                    <ul class="list-disc pl-5 text-sm text-gray-700 dark:text-gray-300">
-                        <li>Menyetujui Peminjaman</li>
-                        <li>Memantau Pengembalian</li>
-                        <li>Mencetak Laporan</li>
-                    </ul>
-                </div>
-            </div>
+    <div class="ss-container">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <a href="{{ route('petugas.approvals.index') }}" class="ss-card ss-card-hover p-5 block">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Tugas</div>
+                <div class="mt-1 text-lg font-semibold">Persetujuan Peminjaman</div>
+                <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">Approve / reject pengajuan.</div>
+            </a>
+            <a href="{{ route('petugas.returns.index') }}" class="ss-card ss-card-hover p-5 block">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Tugas</div>
+                <div class="mt-1 text-lg font-semibold">Memantau Pengembalian</div>
+                <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">Terima / tolak pengembalian + denda.</div>
+            </a>
+            <a href="{{ route('petugas.reports.index') }}" class="ss-card ss-card-hover p-5 block">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Output</div>
+                <div class="mt-1 text-lg font-semibold">Laporan</div>
+                <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">Filter & print laporan.</div>
+            </a>
         </div>
     </div>
 </x-app-layout>

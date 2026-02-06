@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -43,6 +44,22 @@ class ProfileTest extends TestCase
         $this->assertNull($user->email_verified_at);
     }
 
+    public function test_admin_cannot_update_profile_information(): void
+    {
+        $admin = User::factory()->create([
+            'role' => UserRole::Admin,
+        ]);
+
+        $response = $this
+            ->actingAs($admin)
+            ->patch('/profile', [
+                'name' => 'New Admin Name',
+                'email' => 'new-admin@example.com',
+            ]);
+
+        $response->assertForbidden();
+    }
+
     public function test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged(): void
     {
         $user = User::factory()->create();
@@ -77,6 +94,23 @@ class ProfileTest extends TestCase
 
         $this->assertGuest();
         $this->assertNull($user->fresh());
+    }
+
+    public function test_admin_cannot_delete_their_account(): void
+    {
+        $admin = User::factory()->create([
+            'role' => UserRole::Admin,
+        ]);
+
+        $response = $this
+            ->actingAs($admin)
+            ->delete('/profile', [
+                'password' => 'password',
+            ]);
+
+        $response->assertForbidden();
+        $this->assertAuthenticated();
+        $this->assertNotNull($admin->fresh());
     }
 
     public function test_correct_password_must_be_provided_to_delete_account(): void

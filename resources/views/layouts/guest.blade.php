@@ -14,17 +14,50 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+    <body class="font-sans antialiased">
+        @php
+            $maxWidthClass = match ($maxWidth ?? 'md') {
+                'sm' => 'sm:max-w-sm',
+                'md' => 'sm:max-w-md',
+                'lg' => 'sm:max-w-lg',
+                'xl' => 'sm:max-w-xl',
+                '2xl' => 'sm:max-w-2xl',
+                '3xl' => 'sm:max-w-3xl',
+                '4xl' => 'sm:max-w-4xl',
+                '5xl' => 'sm:max-w-5xl',
+                '6xl' => 'sm:max-w-6xl',
+                default => 'sm:max-w-md',
+            };
+
+            $shouldWrapInCard = ($card ?? true) === true;
+        @endphp
+
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-10 sm:pt-0 bg-slate-50 dark:bg-slate-950">
+            <div class="absolute inset-0 pointer-events-none">
+                <div class="absolute -top-32 left-1/2 -translate-x-1/2 h-72 w-72 rounded-full bg-sky-500/10 blur-3xl"></div>
+                <div class="absolute top-32 left-1/3 h-72 w-72 rounded-full bg-indigo-500/10 blur-3xl"></div>
+                <div class="absolute top-40 right-1/4 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl"></div>
+            </div>
+
+            <div class="relative z-10 flex flex-col items-center">
+                <a href="/" class="flex items-center gap-3">
+                    <x-application-logo class="w-12 h-12 fill-current text-indigo-600" />
+                    <div class="leading-tight">
+                        <div class="text-base font-semibold text-slate-900 dark:text-slate-100">SmartSchool</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400">Peminjaman Alat</div>
+                    </div>
                 </a>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
-                {{ $slot }}
-            </div>
+            @if ($shouldWrapInCard)
+                <div class="relative z-10 w-full {{ $maxWidthClass }} mt-6 px-6 py-5 ss-card">
+                    {{ $slot }}
+                </div>
+            @else
+                <div class="relative z-10 w-full {{ $maxWidthClass }} mt-8 px-4 sm:px-6">
+                    {{ $slot }}
+                </div>
+            @endif
         </div>
     </body>
 </html>

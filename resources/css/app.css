@@ -1,3 +1,67 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	:root {
+		color-scheme: light;
+	}
+
+	.dark {
+		color-scheme: dark;
+	}
+
+	body {
+		@apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100;
+	}
+}
+
+@layer components {
+	.ss-topbar {
+		@apply sticky top-0 z-40 border-b border-slate-200/60 bg-white/75 backdrop-blur dark:border-slate-800/70 dark:bg-slate-950/60;
+	}
+
+	.ss-header {
+		@apply border-b border-slate-200/60 bg-white/70 backdrop-blur dark:border-slate-800/70 dark:bg-slate-950/40;
+	}
+
+	.ss-container {
+		@apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+	}
+
+	.ss-card {
+		@apply rounded-2xl border border-slate-200/70 bg-white shadow-sm dark:border-slate-800/70 dark:bg-slate-900/40;
+	}
+
+	.ss-card-hover {
+		@apply transition hover:-translate-y-0.5 hover:shadow-md;
+	}
+
+	.ss-badge {
+		@apply inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium;
+	}
+
+	.ss-badge-success {
+		@apply ss-badge border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-200;
+	}
+
+	.ss-badge-warn {
+		@apply ss-badge border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-200;
+	}
+
+	.ss-badge-danger {
+		@apply ss-badge border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-900/50 dark:bg-rose-950/40 dark:text-rose-200;
+	}
+
+	.ss-table {
+		@apply min-w-full text-sm;
+	}
+
+	.ss-th {
+		@apply py-2 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400;
+	}
+
+	.ss-td {
+		@apply py-3 text-slate-700 dark:text-slate-200;
+	}
+}

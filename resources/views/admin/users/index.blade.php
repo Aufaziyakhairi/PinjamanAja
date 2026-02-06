@@ -33,12 +33,16 @@
                                         <td class="py-2 text-gray-700 dark:text-gray-300">{{ $user->email }}</td>
                                         <td class="py-2 text-gray-700 dark:text-gray-300">{{ $user->role->value ?? $user->role }}</td>
                                         <td class="py-2">
-                                            <a href="{{ route('admin.users.edit', $user) }}" class="text-indigo-600 hover:underline">Edit</a>
-                                            <form class="inline" method="POST" action="{{ route('admin.users.destroy', $user) }}" onsubmit="return confirm('Hapus user?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="text-red-600 hover:underline ml-3" type="submit">Hapus</button>
-                                            </form>
+                                            @if(($user->role->value ?? $user->role) === 'admin')
+                                                <span class="text-xs text-gray-500">Tidak bisa diubah</span>
+                                            @else
+                                                <a href="{{ route('admin.users.edit', $user) }}" class="text-indigo-600 hover:underline">Edit</a>
+                                                <form class="inline" method="POST" action="{{ route('admin.users.destroy', $user) }}" onsubmit="return confirm('Hapus user?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="text-red-600 hover:underline ml-3" type="submit">Hapus</button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

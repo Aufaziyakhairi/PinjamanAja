@@ -1,4 +1,19 @@
 <x-guest-layout>
+    <div class="mb-6">
+        <h1 class="text-xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+            Buat Akun
+        </h1>
+        <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">
+            Daftar untuk mulai menggunakan aplikasi peminjaman alat.
+        </p>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+            Sudah punya akun?
+            <a href="{{ route('login') }}" class="font-semibold text-indigo-700 hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-200 underline underline-offset-4">
+                Masuk
+            </a>
+        </p>
+    </div>
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -40,10 +55,6 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
             <x-primary-button class="ms-4">
                 {{ __('Register') }}
             </x-primary-button>
