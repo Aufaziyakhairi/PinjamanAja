@@ -1,58 +1,105 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Peminjaman Saya</h2>
-            <a href="{{ route('peminjam.loans.create') }}" class="text-sm text-indigo-600 hover:underline">Ajukan</a>
+        <div class="flex items-center justify-between gap-4">
+            <div>
+                <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100 leading-tight">Histori Peminjaman</h2>
+                <div class="text-sm text-slate-500 dark:text-slate-400">Pantau status pengajuan, tenggat, return, dan denda.</div>
+            </div>
+            <a href="{{ route('peminjam.loans.create') }}" class="ss-link text-sm">Ajukan</a>
         </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <x-flash />
-            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg overflow-hidden">
-                <div class="p-6">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full text-sm">
-                            <thead class="text-left text-gray-500">
+    <div class="ss-container">
+        <x-flash />
+
+        <div class="ss-table-wrap">
+            <div class="p-6">
+                <div class="overflow-x-auto">
+                    <table class="ss-table">
+                        <thead>
                                 <tr>
-                                    <th class="py-2">ID</th>
-                                    <th class="py-2">Tanggal</th>
-                                    <th class="py-2">Item</th>
-                                    <th class="py-2">Status</th>
-                                    <th class="py-2">Return</th>
-                                    <th class="py-2">Aksi</th>
+                                    <th class="ss-th">ID</th>
+                                    <th class="ss-th">Tanggal</th>
+                                    <th class="ss-th">Item</th>
+                                    <th class="ss-th">Jatuh Tempo</th>
+                                    <th class="ss-th">Status</th>
+                                    <th class="ss-th">Return</th>
+                                    <th class="ss-th">Denda</th>
+                                    <th class="ss-th">Aksi</th>
                                 </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                                @foreach($loans as $loan)
-                                    <tr>
-                                        <td class="py-2 text-gray-700 dark:text-gray-300">#{{ $loan->id }}</td>
-                                        <td class="py-2 text-gray-700 dark:text-gray-300">{{ $loan->created_at->format('Y-m-d') }}</td>
-                                        <td class="py-2 text-gray-700 dark:text-gray-300">
+                        </thead>
+                        <tbody class="divide-y divide-slate-200/70 dark:divide-slate-800/70">
+                                @forelse($loans as $loan)
+                                    @php
+                                        $return = $loan->loanReturn;
+                                        $fine = (int) ($return?->fine_amount ?? 0);
+
+                                        $loanStatus = $loan->status->value ?? (string) $loan->status;
+                                        $loanVariant = match ($loanStatus) {
+                                            'pending' => 'warn',
+                                            'approved' => 'success',
+                                            'rejected' => 'danger',
+                                            'returned' => 'neutral',
+                                            default => 'neutral',
+                                        };
+
+                                        $returnStatus = $return?->status->value ?? ($return?->status ? (string) $return->status : '-');
+                                        $returnVariant = match ($returnStatus) {
+                                            'requested' => 'info',
+                                            'received' => 'success',
+                                            'rejected' => 'danger',
+                                            '-', '' => 'neutral',
+                                            default => 'neutral',
+                                        };
+                                    @endphp
+                                    <tr class="ss-tr">
+                                        <td class="ss-td">#{{ $loan->id }}</td>
+                                        <td class="ss-td">{{ $loan->created_at->format('Y-m-d') }}</td>
+                                        <td class="ss-td">
                                             @foreach($loan->items as $it)
                                                 <div>{{ $it->tool?->name }} ({{ $it->qty }})</div>
                                             @endforeach
                                         </td>
-                                        <td class="py-2 text-gray-700 dark:text-gray-300">{{ $loan->status->value ?? $loan->status }}</td>
-                                        <td class="py-2 text-gray-700 dark:text-gray-300">{{ $loan->loanReturn?->status->value ?? ($loan->loanReturn?->status ?? '-') }}</td>
-                                        <td class="py-2">
-                                            @if(($loan->status->value ?? $loan->status) === 'approved' && !$loan->loanReturn)
-                                                <form method="POST" action="{{ route('peminjam.returns.store', $loan) }}" onsubmit="return confirm('Ajukan pengembalian?')">
-                                                    @csrf
-                                                    <button class="text-indigo-600 hover:underline" type="submit">Ajukan Return</button>
-                                                </form>
+                                        <td class="ss-td">{{ $loan->due_at?->format('Y-m-d H:i') ?? '-' }}</td>
+                                        <td class="ss-td"><x-badge :variant="$loanVariant">{{ $loanStatus }}</x-badge></td>
+                                        <td class="ss-td">
+                                            @if($return)
+                                                <x-badge :variant="$returnVariant">{{ $returnStatus }}</x-badge>
+                                            @else
+                                                <x-badge variant="neutral">-</x-badge>
+                                            @endif
+                                        </td>
+                                        <td class="ss-td">
+                                            @if($fine > 0)
+                                                Rp {{ number_format($fine, 0, ',', '.') }}
                                             @else
                                                 -
                                             @endif
                                         </td>
+                                        <td class="ss-td">
+                                            <a class="ss-link" href="{{ route('peminjam.loans.show', $loan) }}">Detail</a>
+                                            @if($loanStatus === 'approved' && !$return)
+                                                <form class="inline" method="POST" action="{{ route('peminjam.returns.store', $loan) }}" onsubmit="return confirm('Ajukan pengembalian?')">
+                                                    @csrf
+                                                    <button class="ml-3 ss-link" type="submit">Ajukan Return</button>
+                                                </form>
+                                            @endif
+                                        </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="8">
+                                            <x-empty-state title="Belum ada histori" description="Klik Ajukan untuk membuat pengajuan peminjaman pertama.">
+                                                <a href="{{ route('peminjam.loans.create') }}" class="ss-link text-sm">Ajukan peminjaman</a>
+                                            </x-empty-state>
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
 
-                    <div class="mt-4">{{ $loans->links() }}</div>
-                </div>
+                <div class="mt-4">{{ $loans->links() }}</div>
             </div>
         </div>
     </div>

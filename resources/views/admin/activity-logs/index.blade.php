@@ -1,47 +1,61 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Log Aktivitas</h2>
+        <div>
+            <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100 leading-tight">Log Aktivitas</h2>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Audit trail perubahan data dan aksi user.</div>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <x-flash />
+    <div class="ss-container">
+        <x-flash />
 
-            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg overflow-hidden">
-                <div class="p-6">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full text-sm">
-                            <thead class="text-left text-gray-500">
-                                <tr>
-                                    <th class="py-2">Waktu</th>
-                                    <th class="py-2">User</th>
-                                    <th class="py-2">Action</th>
-                                    <th class="py-2">Subject</th>
-                                    <th class="py-2">Meta</th>
+        <div class="ss-table-wrap">
+            <div class="p-6">
+                <div class="overflow-x-auto">
+                    <table class="ss-table">
+                        <thead>
+                            <tr>
+                                <th class="ss-th">Waktu</th>
+                                <th class="ss-th">User</th>
+                                <th class="ss-th">Action</th>
+                                <th class="ss-th">Subject</th>
+                                <th class="ss-th">Meta</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200/70 dark:divide-slate-800/70">
+                            @forelse($logs as $log)
+                                @php
+                                    $action = (string) $log->action;
+                                    $actionVariant = str_contains($action, 'delete') ? 'danger' : (str_contains($action, 'create') ? 'success' : 'info');
+                                @endphp
+                                <tr class="ss-tr">
+                                    <td class="ss-td whitespace-nowrap">{{ $log->created_at?->format('Y-m-d H:i:s') ?? $log->created_at }}</td>
+                                    <td class="ss-td">{{ $log->user?->name ?? '-' }}</td>
+                                    <td class="ss-td"><x-badge :variant="$actionVariant">{{ $action }}</x-badge></td>
+                                    <td class="ss-td">{{ class_basename($log->subject_type) }}#{{ $log->subject_id }}</td>
+                                    <td class="ss-td">
+                                        @if($log->meta)
+                                            <details class="select-text">
+                                                <summary class="cursor-pointer text-sm text-slate-600 hover:underline dark:text-slate-300">lihat</summary>
+                                                <pre class="mt-2 whitespace-pre-wrap text-xs text-slate-600 dark:text-slate-300">{{ json_encode($log->meta, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE) }}</pre>
+                                            </details>
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                                @foreach($logs as $log)
-                                    <tr>
-                                        <td class="py-2 text-gray-700 dark:text-gray-300">{{ $log->created_at }}</td>
-                                        <td class="py-2 text-gray-700 dark:text-gray-300">{{ $log->user?->name ?? '-' }}</td>
-                                        <td class="py-2 font-medium text-gray-900 dark:text-gray-100">{{ $log->action }}</td>
-                                        <td class="py-2 text-gray-700 dark:text-gray-300">{{ $log->subject_type }}#{{ $log->subject_id }}</td>
-                                        <td class="py-2 text-gray-700 dark:text-gray-300">
-                                            @if($log->meta)
-                                                <pre class="whitespace-pre-wrap">{{ json_encode($log->meta, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE) }}</pre>
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="mt-4">{{ $logs->links() }}</div>
+                            @empty
+                                <tr>
+                                    <td colspan="5">
+                                        <x-empty-state title="Log masih kosong" description="Log akan terisi saat ada aksi create/update/delete pada data." />
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
+
+                <div class="mt-4">{{ $logs->links() }}</div>
             </div>
         </div>
     </div>

@@ -24,6 +24,79 @@ Semua aktor: **Login** dan **Logout**.
 
 ## Alur Proses (sesuai flowchart)
 
+## Diagram Flowchart (Mermaid)
+
+### A) Login → Dashboard (berdasarkan role)
+
+```mermaid
+flowchart TD
+  A([Mulai]) --> B[Login]
+  B --> C{Kredensial valid?}
+  C -- Tidak --> D[Login gagal\nKembali ke Login]
+  C -- Ya --> E{Role user}
+  E -- admin --> F[Admin Dashboard]
+  E -- petugas --> G[Petugas Dashboard]
+  E -- peminjam --> H[Peminjam Dashboard]
+  F --> Z[Logout]
+  G --> Z
+  H --> Z
+```
+
+### B) Flow Admin (sesuai flowchart gambar)
+
+```mermaid
+flowchart TD
+  A[Admin Dashboard] --> U[Kelola User\n(Create/Edit/Delete)]
+  A --> K[Kelola Kategori\n(Create/Edit/Delete)]
+  A --> T[Kelola Alat\n(Create/Edit/Delete)]
+  A --> L[Kelola Data Peminjaman\n(Create/Edit/Delete)]
+  A --> R[Kelola Pengembalian\n(Create/Edit/Delete)]
+  A --> LOG[Log Aktivitas\n(Lihat)]
+  U --> A
+  K --> A
+  T --> A
+  L --> A
+  R --> A
+  LOG --> A
+```
+
+### C) Flow Peminjam (ajukan pinjam & return)
+
+```mermaid
+flowchart TD
+  A[Peminjam Dashboard] --> B[Daftar Alat]
+  A --> C[Peminjaman Saya]
+  C --> D[Ajukan Peminjaman]
+  D --> E[Status: pending]
+  C --> F{Status loan approved\ndan belum ada return?}
+  F -- Ya --> G[Ajukan Return]
+  G --> H[Status return: requested]
+  F -- Tidak --> I[Lihat status saja]
+```
+
+### D) Flow Petugas (approval & menerima return)
+
+```mermaid
+flowchart TD
+  A[Petugas Dashboard] --> B[Approval Peminjaman]
+  B --> C{Pilih loan status pending}
+  C --> D[Approve]
+  C --> E[Reject]
+  D --> D1[Loan: approved]
+  E --> E1[Loan: rejected]
+
+  A --> R[Memantau Pengembalian]
+  R --> S{Pilih return status requested}
+  S --> T[Terima Return]
+  S --> U[Tolak Return]
+  T --> T1[Return: received\nLoan: returned\nHitung denda bila terlambat]
+  U --> U1[Return: rejected]
+
+  A --> P[Laporan]
+  P --> P1[Filter tanggal/status]
+  P1 --> P2[Print]
+```
+
 ### 1) Login & Validasi
 1. Mulai → Login
 2. Sistem melakukan validasi kredensial

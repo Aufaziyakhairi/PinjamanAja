@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div class="mb-6">
         <h1 class="text-xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
-            Reset Password
+            {{ __('Reset Password') }}
         </h1>
         <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">
             Buat password baru untuk akun kamu.

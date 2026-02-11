@@ -13,7 +13,7 @@
                 <div class="p-6 space-y-3 text-sm text-gray-700 dark:text-gray-300">
                     <div><span class="font-semibold">Peminjam:</span> {{ $loan->borrower?->name }} ({{ $loan->borrower?->email }})</div>
                     <div><span class="font-semibold">Status:</span> {{ $loan->status->value ?? $loan->status }}</div>
-                    <div><span class="font-semibold">Jatuh Tempo:</span> {{ $loan->due_at?->format('Y-m-d') ?? '-' }}</div>
+                    <div><span class="font-semibold">Jatuh Tempo:</span> {{ $loan->due_at?->format('Y-m-d H:i') ?? '-' }}</div>
                     <div><span class="font-semibold">Item:</span>
                         @foreach($loan->items as $it)
                             <div>- #{{ $it->tool_id }} / {{ $it->tool?->name }} ({{ $it->qty }})</div>

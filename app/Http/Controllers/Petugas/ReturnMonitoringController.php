@@ -15,15 +15,24 @@ use Illuminate\View\View;
 
 class ReturnMonitoringController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $returns = LoanReturn::query()
-            ->with(['loan.borrower', 'loan.items.tool', 'requester'])
-            ->where('status', ReturnStatus::Requested->value)
-            ->orderBy('requested_at')
-            ->paginate(10);
+        $status = $request->string('status')->toString();
+        $allowed = array_merge(['', 'all'], array_map(fn (ReturnStatus $s) => $s->value, ReturnStatus::cases()));
+        if (!in_array($status, $allowed, true)) {
+            abort(422, 'Status filter tidak valid.');
+        }
 
-        return view('petugas.returns.index', compact('returns'));
+        $returns = LoanReturn::query()
+            ->with(['loan.borrower', 'loan.items.tool', 'requester', 'receiver'])
+            ->when($status && $status !== 'all', fn ($q) => $q->where('status', $status), fn ($q) => $q->where('status', ReturnStatus::Requested->value))
+            ->orderByDesc('requested_at')
+            ->paginate(10)
+            ->withQueryString();
+
+        $statuses = ReturnStatus::cases();
+
+        return view('petugas.returns.index', compact('returns', 'statuses', 'status'));
     }
 
     public function receive(Request $request, LoanReturn $return): RedirectResponse
@@ -49,7 +58,13 @@ class ReturnMonitoringController extends Controller
             $return->loan->returned_at = $receivedAt;
             $return->loan->save();
 
-            ActivityLogger::log('return.received', $return, [], $request);
+            ActivityLogger::log('return.received', $return, [
+                'loan_id' => $return->loan_id,
+                'due_at' => $return->loan?->due_at?->toDateString(),
+                'received_at' => $receivedAt->toDateTimeString(),
+                'fine_days' => $fine['days'],
+                'fine_amount' => $fine['amount'],
+            ], $request);
         });
 
         return back()->with('status', 'Pengembalian diterima.');

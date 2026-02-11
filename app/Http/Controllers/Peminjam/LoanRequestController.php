@@ -26,6 +26,21 @@ class LoanRequestController extends Controller
         return view('peminjam.loans.index', compact('loans'));
     }
 
+    public function show(Request $request, Loan $loan): View
+    {
+        if ($loan->user_id !== $request->user()->id) {
+            abort(403);
+        }
+
+        $loan->load([
+            'items.tool.category',
+            'loanReturn.requester',
+            'loanReturn.receiver',
+        ]);
+
+        return view('peminjam.loans.show', compact('loan'));
+    }
+
     public function create(): View
     {
         $tools = Tool::query()
@@ -42,7 +57,6 @@ class LoanRequestController extends Controller
     {
         $validated = $request->validate([
             'tool_id' => ['required', 'exists:tools,id'],
-            'due_at' => ['nullable', 'date'],
             'notes' => ['nullable', 'string'],
         ]);
 
@@ -63,7 +77,7 @@ class LoanRequestController extends Controller
             $loan = Loan::create([
                 'user_id' => $request->user()->id,
                 'status' => LoanStatus::Pending,
-                'due_at' => $validated['due_at'] ?? null,
+                'due_at' => null,
                 'notes' => $validated['notes'] ?? null,
             ]);
 

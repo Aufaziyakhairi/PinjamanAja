@@ -1,18 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Tambah Pengembalian</h2>
+        <div>
+            <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100 leading-tight">Tambah Pengembalian</h2>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Tambahkan data pengembalian untuk loan tertentu.</div>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+    <div class="ss-container">
+        <div class="max-w-3xl mx-auto">
             <x-flash />
-            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
+            <div class="ss-card">
                 <div class="p-6">
                     <form method="POST" action="{{ route('admin.returns.store') }}" class="space-y-4">
                         @csrf
                         <div>
                             <x-input-label for="loan_id" value="Loan" />
-                            <select id="loan_id" name="loan_id" class="mt-1 block w-full rounded border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100" required>
+                            <select id="loan_id" name="loan_id" class="ss-input mt-1" required>
                                 <option value="">-- pilih --</option>
                                 @foreach($loans as $l)
                                     <option value="{{ $l->id }}" @selected(old('loan_id') == $l->id)>#{{ $l->id }} - {{ $l->borrower?->name }} ({{ $l->status->value ?? $l->status }})</option>
@@ -21,19 +24,20 @@
                         </div>
                         <div>
                             <x-input-label for="status" value="Status" />
-                            <select id="status" name="status" class="mt-1 block w-full rounded border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100" required>
+                            <select id="status" name="status" class="ss-input mt-1" required>
                                 <option value="requested" @selected(old('status')==='requested')>requested</option>
                                 <option value="received" @selected(old('status')==='received')>received</option>
                                 <option value="rejected" @selected(old('status')==='rejected')>rejected</option>
                             </select>
+                            <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">Jika status <span class="font-medium">received</span>, denda akan dihitung sesuai keterlambatan (jika ada).</div>
                         </div>
                         <div>
                             <x-input-label for="notes" value="Catatan" />
-                            <textarea id="notes" name="notes" class="mt-1 block w-full rounded border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100" rows="3">{{ old('notes') }}</textarea>
+                            <textarea id="notes" name="notes" class="ss-input mt-1" rows="3">{{ old('notes') }}</textarea>
                         </div>
                         <div class="flex gap-3">
                             <x-primary-button>Simpan</x-primary-button>
-                            <a href="{{ route('admin.returns.index') }}" class="text-sm text-gray-600 hover:underline">Batal</a>
+                            <a href="{{ route('admin.returns.index') }}" class="ss-link text-sm">Batal</a>
                         </div>
                     </form>
                 </div>

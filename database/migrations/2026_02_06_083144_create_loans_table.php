@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('approved_at')->nullable();
             $table->timestamp('rejected_at')->nullable();
             $table->timestamp('returned_at')->nullable();
-            $table->date('due_at')->nullable();
+            $table->dateTime('due_at')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
 

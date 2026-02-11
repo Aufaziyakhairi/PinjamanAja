@@ -53,6 +53,30 @@
 		@apply ss-badge border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-900/50 dark:bg-rose-950/40 dark:text-rose-200;
 	}
 
+	.ss-badge-neutral {
+		@apply ss-badge border-slate-200 bg-slate-50 text-slate-700 dark:border-slate-800 dark:bg-slate-900/40 dark:text-slate-200;
+	}
+
+	.ss-badge-info {
+		@apply ss-badge border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-900/50 dark:bg-sky-950/40 dark:text-sky-200;
+	}
+
+	.ss-link {
+		@apply text-indigo-600 hover:text-indigo-500 hover:underline dark:text-indigo-300 dark:hover:text-indigo-200;
+	}
+
+	.ss-input {
+		@apply block w-full rounded-md border-slate-300 bg-white text-slate-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:focus:border-indigo-400 dark:focus:ring-indigo-400;
+	}
+
+	.ss-table-wrap {
+		@apply overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-sm dark:border-slate-800/70 dark:bg-slate-900/40;
+	}
+
+	.ss-tr {
+		@apply transition hover:bg-slate-50/70 dark:hover:bg-slate-800/30;
+	}
+
 	.ss-table {
 		@apply min-w-full text-sm;
 	}

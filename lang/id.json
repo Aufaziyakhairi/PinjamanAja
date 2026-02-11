@@ -1,0 +1,42 @@
+{
+    "Dashboard": "Dasbor",
+    "Profile": "Profil",
+    "Log Out": "Keluar",
+
+    "Log in": "Masuk",
+    "Register": "Daftar",
+    "Name": "Nama",
+    "Email": "Email",
+    "Password": "Kata sandi",
+    "Confirm Password": "Konfirmasi kata sandi",
+
+    "Remember me": "Ingat saya",
+    "Forgot your password?": "Lupa kata sandi?",
+    "Already registered?": "Sudah punya akun?",
+
+    "Reset Password": "Atur Ulang Kata Sandi",
+    "Send Password Reset Link": "Kirim Tautan Atur Ulang Kata Sandi",
+
+    "This is a secure area of the application. Please confirm your password before continuing.": "Ini adalah area aman aplikasi. Silakan konfirmasi kata sandi sebelum melanjutkan.",
+
+    "Profile Information": "Informasi Profil",
+    "Update your account's profile information and email address.": "Perbarui informasi profil akun dan alamat email.",
+    "Your email address is unverified.": "Alamat email kamu belum terverifikasi.",
+    "Click here to re-send the verification email.": "Klik di sini untuk mengirim ulang email verifikasi.",
+    "A new verification link has been sent to your email address.": "Tautan verifikasi baru telah dikirim ke alamat email kamu.",
+
+    "Update Password": "Perbarui Kata Sandi",
+    "Ensure your account is using a long, random password to stay secure.": "Pastikan akun kamu menggunakan kata sandi yang panjang dan acak agar tetap aman.",
+    "Current Password": "Kata sandi saat ini",
+    "New Password": "Kata sandi baru",
+
+    "Delete Account": "Hapus Akun",
+    "Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.": "Setelah akun kamu dihapus, semua data dan sumber daya akan dihapus secara permanen. Masukkan kata sandi untuk mengonfirmasi penghapusan akun.",
+    "Cancel": "Batal",
+    "Delete": "Hapus",
+
+    "You're logged in!": "Kamu sudah masuk!",
+
+    "A new verification link has been sent to the email address you provided during registration.": "Tautan verifikasi baru telah dikirim ke alamat email yang kamu gunakan saat mendaftar.",
+    "Resend Verification Email": "Kirim Ulang Email Verifikasi"
+}

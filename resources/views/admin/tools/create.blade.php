@@ -1,18 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Tambah Alat</h2>
+        <div>
+            <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100 leading-tight">Tambah Alat</h2>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Isi data alat dan kategorinya.</div>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+    <div class="ss-container">
+        <div class="max-w-3xl mx-auto">
             <x-flash />
-            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
+            <div class="ss-card">
                 <div class="p-6">
                     <form method="POST" action="{{ route('admin.tools.store') }}" class="space-y-4">
                         @csrf
                         <div>
                             <x-input-label for="category_id" value="Kategori" />
-                            <select id="category_id" name="category_id" class="mt-1 block w-full rounded border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100" required>
+                            <select id="category_id" name="category_id" class="ss-input mt-1" required>
                                 <option value="">-- pilih --</option>
                                 @foreach($categories as $cat)
                                     <option value="{{ $cat->id }}" @selected(old('category_id') == $cat->id)>{{ $cat->name }}</option>
@@ -25,11 +28,12 @@
                         </div>
                         <div>
                             <x-input-label for="description" value="Deskripsi" />
-                            <textarea id="description" name="description" class="mt-1 block w-full rounded border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100" rows="4">{{ old('description') }}</textarea>
+                            <textarea id="description" name="description" class="ss-input mt-1" rows="4">{{ old('description') }}</textarea>
+                            <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">Opsional. Jelaskan fungsi/kondisi alat.</div>
                         </div>
                         <div class="flex gap-3">
                             <x-primary-button>Simpan</x-primary-button>
-                            <a href="{{ route('admin.tools.index') }}" class="text-sm text-gray-600 hover:underline">Batal</a>
+                            <a href="{{ route('admin.tools.index') }}" class="ss-link text-sm">Batal</a>
                         </div>
                     </form>
                 </div>

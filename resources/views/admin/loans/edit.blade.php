@@ -35,7 +35,8 @@
                             </div>
                             <div>
                                 <x-input-label for="due_at" value="Jatuh Tempo" />
-                                <x-text-input id="due_at" type="date" name="due_at" value="{{ old('due_at', $loan->due_at?->format('Y-m-d')) }}" class="mt-1 block w-full" />
+                                <x-text-input id="due_at" type="datetime-local" name="due_at" value="{{ old('due_at', $loan->due_at?->format('Y-m-d\\TH:i')) }}" class="mt-1 block w-full" />
+                                <div class="mt-1 text-xs text-gray-500 dark:text-gray-400">Jika sudah approve, denda dihitung berdasarkan jam saat pengembalian diterima.</div>
                             </div>
                             <div>
                                 <x-input-label for="notes" value="Catatan" />

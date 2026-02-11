@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\LoanController;
 use App\Http\Controllers\Admin\LoanReturnController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\ToolController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Petugas\LoanApprovalController;
@@ -33,6 +34,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('loans', LoanController::class);
     Route::resource('returns', LoanReturnController::class)->except(['show']);
     Route::get('activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
+
+    Route::get('reports', [AdminReportController::class, 'index'])->name('reports.index');
+    Route::get('reports/print', [AdminReportController::class, 'print'])->name('reports.print');
 });
 
 Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')->group(function () {
@@ -58,6 +62,8 @@ Route::middleware(['auth', 'role:peminjam'])->prefix('peminjam')->name('peminjam
     Route::get('loans', [LoanRequestController::class, 'index'])->name('loans.index');
     Route::get('loans/create', [LoanRequestController::class, 'create'])->name('loans.create');
     Route::post('loans', [LoanRequestController::class, 'store'])->name('loans.store');
+
+    Route::get('loans/{loan}', [LoanRequestController::class, 'show'])->name('loans.show');
 
     Route::post('loans/{loan}/return-request', [ReturnRequestController::class, 'store'])->name('returns.store');
 });

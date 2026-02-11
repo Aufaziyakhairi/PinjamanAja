@@ -1,53 +1,68 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Menyetujui Peminjaman</h2>
+        <div>
+            <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100 leading-tight">Menyetujui Peminjaman</h2>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Saat approve, petugas wajib mengisi tenggat (jatuh tempo).</div>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <x-flash />
-            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg overflow-hidden">
-                <div class="p-6">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full text-sm">
-                            <thead class="text-left text-gray-500">
+    <div class="ss-container">
+        <x-flash />
+
+        <div class="ss-table-wrap">
+            <div class="p-6">
+                <div class="overflow-x-auto">
+                    <table class="ss-table">
+                        <thead>
                                 <tr>
-                                    <th class="py-2">ID</th>
-                                    <th class="py-2">Peminjam</th>
-                                    <th class="py-2">Item</th>
-                                    <th class="py-2">Jatuh Tempo</th>
-                                    <th class="py-2">Aksi</th>
+                                    <th class="ss-th">ID</th>
+                                    <th class="ss-th">Peminjam</th>
+                                    <th class="ss-th">Item</th>
+                                    <th class="ss-th">Tenggat</th>
+                                    <th class="ss-th">Aksi</th>
                                 </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                                @foreach($loans as $loan)
-                                    <tr>
-                                        <td class="py-2 text-gray-700 dark:text-gray-300">#{{ $loan->id }}</td>
-                                        <td class="py-2 font-medium text-gray-900 dark:text-gray-100">{{ $loan->borrower?->name }}</td>
-                                        <td class="py-2 text-gray-700 dark:text-gray-300">
+                        </thead>
+                        <tbody class="divide-y divide-slate-200/70 dark:divide-slate-800/70">
+                                @forelse($loans as $loan)
+                                    <tr class="ss-tr">
+                                        <td class="ss-td">#{{ $loan->id }}</td>
+                                        <td class="ss-td font-medium text-slate-900 dark:text-slate-100">{{ $loan->borrower?->name }}</td>
+                                        <td class="ss-td">
                                             @foreach($loan->items as $it)
                                                 <div>{{ $it->tool?->name }} ({{ $it->qty }})</div>
                                             @endforeach
                                         </td>
-                                        <td class="py-2 text-gray-700 dark:text-gray-300">{{ $loan->due_at?->format('Y-m-d') ?? '-' }}</td>
-                                        <td class="py-2">
-                                            <form class="inline" method="POST" action="{{ route('petugas.approvals.approve', $loan) }}" onsubmit="return confirm('Approve peminjaman?')">
+                                        <td class="ss-td">
+                                            <form class="flex items-center gap-2" method="POST" action="{{ route('petugas.approvals.approve', $loan) }}" onsubmit="return confirm('Approve peminjaman dan set tenggat?')">
                                                 @csrf
-                                                <button type="submit" class="text-green-600 hover:underline">Approve</button>
+                                                <input
+                                                    type="datetime-local"
+                                                    name="due_at"
+                                                    value="{{ old('due_at', now()->addDay()->format('Y-m-d\\TH:i')) }}"
+                                                    min="{{ now()->format('Y-m-d\\TH:i') }}"
+                                                    class="ss-input text-sm py-1.5 w-40"
+                                                    required
+                                                />
+                                                <button type="submit" class="text-emerald-600 hover:underline">Approve</button>
                                             </form>
+                                        </td>
+                                        <td class="ss-td">
                                             <form class="inline" method="POST" action="{{ route('petugas.approvals.reject', $loan) }}" onsubmit="return confirm('Tolak peminjaman?')">
                                                 @csrf
                                                 <button type="submit" class="text-red-600 hover:underline ml-3">Reject</button>
                                             </form>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="py-10 text-center text-slate-500">Tidak ada peminjaman yang menunggu persetujuan.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
 
-                    <div class="mt-4">{{ $loans->links() }}</div>
-                </div>
+                <div class="mt-4">{{ $loans->links() }}</div>
             </div>
         </div>
     </div>

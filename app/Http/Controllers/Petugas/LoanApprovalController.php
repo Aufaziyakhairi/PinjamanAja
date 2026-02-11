@@ -28,7 +28,11 @@ class LoanApprovalController extends Controller
 
     public function approve(Request $request, Loan $loan): RedirectResponse
     {
-        DB::transaction(function () use ($loan, $request) {
+        $validated = $request->validate([
+            'due_at' => ['required', 'date', 'after_or_equal:now'],
+        ]);
+
+        DB::transaction(function () use ($loan, $request, $validated) {
             $loan->load('items');
             if ($loan->status !== LoanStatus::Pending) {
                 abort(422, 'Peminjaman bukan status pending.');
@@ -53,9 +57,10 @@ class LoanApprovalController extends Controller
             $loan->status = LoanStatus::Approved;
             $loan->approved_by = $request->user()->id;
             $loan->approved_at = now();
+            $loan->due_at = $validated['due_at'];
             $loan->save();
 
-            ActivityLogger::log('loan.approved', $loan, [], $request);
+            ActivityLogger::log('loan.approved', $loan, ['due_at' => $validated['due_at']], $request);
         });
 
         return back()->with('status', 'Peminjaman disetujui.');

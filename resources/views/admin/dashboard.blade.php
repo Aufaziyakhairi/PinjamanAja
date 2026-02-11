@@ -39,6 +39,12 @@
                 <div class="mt-1 text-lg font-semibold">Log Aktivitas</div>
                 <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">Jejak perubahan data.</div>
             </a>
+
+            <a href="{{ route('admin.reports.index') }}" class="ss-card ss-card-hover p-5 block">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Laporan</div>
+                <div class="mt-1 text-lg font-semibold">Cetak Laporan</div>
+                <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">Filter & cetak data peminjaman.</div>
+            </a>
         </div>
     </div>
 </x-app-layout>

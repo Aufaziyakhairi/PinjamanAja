@@ -43,7 +43,7 @@
                 <a href="/" class="flex items-center gap-3">
                     <x-application-logo class="w-12 h-12 fill-current text-indigo-600" />
                     <div class="leading-tight">
-                        <div class="text-base font-semibold text-slate-900 dark:text-slate-100">SmartSchool</div>
+                        <div class="text-base font-semibold text-slate-900 dark:text-slate-100">{{ config('app.name') }}</div>
                         <div class="text-xs text-slate-500 dark:text-slate-400">Peminjaman Alat</div>
                     </div>
                 </a>

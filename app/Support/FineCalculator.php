@@ -16,14 +16,13 @@ class FineCalculator
             return ['days' => 0, 'amount' => 0];
         }
 
-        $dueDay = $loan->due_at->startOfDay();
-        $receivedDay = $receivedAt->copy()->startOfDay();
-
-        if ($receivedDay->lessThanOrEqualTo($dueDay)) {
+        $dueAt = $loan->due_at;
+        if ($receivedAt->lessThanOrEqualTo($dueAt)) {
             return ['days' => 0, 'amount' => 0];
         }
 
-        $days = $dueDay->diffInDays($receivedDay);
+        $minutesLate = $dueAt->diffInMinutes($receivedAt);
+        $days = (int) max(1, (int) ceil($minutesLate / 1440));
         $perDay = (int) config('loan.fine_per_day', 0);
 
         return [

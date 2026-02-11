@@ -1,18 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Tambah Peminjaman</h2>
+        <div>
+            <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100 leading-tight">Tambah Peminjaman</h2>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Buat transaksi peminjaman untuk peminjam.</div>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+    <div class="ss-container">
+        <div class="max-w-3xl mx-auto">
             <x-flash />
-            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
+            <div class="ss-card">
                 <div class="p-6">
                     <form method="POST" action="{{ route('admin.loans.store') }}" class="space-y-4">
                         @csrf
                         <div>
                             <x-input-label for="user_id" value="Peminjam" />
-                            <select id="user_id" name="user_id" class="mt-1 block w-full rounded border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100" required>
+                            <select id="user_id" name="user_id" class="ss-input mt-1" required>
                                 <option value="">-- pilih --</option>
                                 @foreach($users as $u)
                                     <option value="{{ $u->id }}" @selected(old('user_id') == $u->id)>{{ $u->name }} ({{ $u->email }})</option>
@@ -21,24 +24,26 @@
                         </div>
                         <div>
                             <x-input-label for="tool_id" value="Alat" />
-                            <select id="tool_id" name="tool_id" class="mt-1 block w-full rounded border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100" required>
+                            <select id="tool_id" name="tool_id" class="ss-input mt-1" required>
                                 <option value="">-- pilih --</option>
                                 @foreach($tools as $t)
                                     <option value="{{ $t->id }}" @selected(old('tool_id') == $t->id)>#{{ $t->id }} - {{ $t->name }}</option>
                                 @endforeach
                             </select>
+                            <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tip: pilih alat yang sedang tidak dipinjam.</div>
                         </div>
                         <div>
                             <x-input-label for="due_at" value="Jatuh Tempo (opsional)" />
-                            <x-text-input id="due_at" type="date" name="due_at" value="{{ old('due_at') }}" class="mt-1 block w-full" />
+                            <x-text-input id="due_at" type="datetime-local" name="due_at" value="{{ old('due_at') }}" class="mt-1 block w-full" />
+                            <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">Kosongkan jika tenggat akan ditentukan saat approve.</div>
                         </div>
                         <div>
                             <x-input-label for="notes" value="Catatan" />
-                            <textarea id="notes" name="notes" class="mt-1 block w-full rounded border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100" rows="3">{{ old('notes') }}</textarea>
+                            <textarea id="notes" name="notes" class="ss-input mt-1" rows="3">{{ old('notes') }}</textarea>
                         </div>
                         <div class="flex gap-3">
                             <x-primary-button>Simpan</x-primary-button>
-                            <a href="{{ route('admin.loans.index') }}" class="text-sm text-gray-600 hover:underline">Batal</a>
+                            <a href="{{ route('admin.loans.index') }}" class="ss-link text-sm">Batal</a>
                         </div>
                     </form>
                 </div>

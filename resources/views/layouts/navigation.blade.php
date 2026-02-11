@@ -9,7 +9,7 @@
                         <div class="flex items-center gap-3">
                             <x-application-logo class="block h-9 w-auto fill-current text-indigo-600" />
                             <div class="hidden sm:block leading-tight">
-                                <div class="text-sm font-semibold text-slate-900 dark:text-slate-100">SmartSchool</div>
+                                <div class="text-sm font-semibold text-slate-900 dark:text-slate-100">{{ config('app.name') }}</div>
                                 <div class="text-xs text-slate-500 dark:text-slate-400">Peminjaman Alat</div>
                             </div>
                         </div>
@@ -41,6 +41,9 @@
                         <x-nav-link :href="route('admin.activity-logs.index')" :active="request()->routeIs('admin.activity-logs.*')">
                             {{ __('Log') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.reports.index')" :active="request()->routeIs('admin.reports.*')">
+                            {{ __('Laporan') }}
+                        </x-nav-link>
                     @endif
 
                     @if(Auth::user()->isPetugas())
@@ -60,7 +63,7 @@
                             {{ __('Daftar Alat') }}
                         </x-nav-link>
                         <x-nav-link :href="route('peminjam.loans.index')" :active="request()->routeIs('peminjam.loans.*')">
-                            {{ __('Peminjaman Saya') }}
+                            {{ __('Histori') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -141,6 +144,9 @@
                 <x-responsive-nav-link :href="route('admin.activity-logs.index')" :active="request()->routeIs('admin.activity-logs.*')">
                     {{ __('Log') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.reports.index')" :active="request()->routeIs('admin.reports.*')">
+                    {{ __('Laporan') }}
+                </x-responsive-nav-link>
             @endif
 
             @if(Auth::user()->isPetugas())
@@ -160,7 +166,7 @@
                     {{ __('Daftar Alat') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('peminjam.loans.index')" :active="request()->routeIs('peminjam.loans.*')">
-                    {{ __('Peminjaman Saya') }}
+                    {{ __('Histori') }}
                 </x-responsive-nav-link>
             @endif
         </div>

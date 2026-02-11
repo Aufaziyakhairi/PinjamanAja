@@ -31,7 +31,7 @@ class Loan extends Model
             'approved_at' => 'datetime',
             'rejected_at' => 'datetime',
             'returned_at' => 'datetime',
-            'due_at' => 'date',
+            'due_at' => 'datetime',
         ];
     }
 

@@ -1,51 +1,70 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Kategori</h2>
-            <a href="{{ route('admin.categories.create') }}" class="text-sm text-indigo-600 hover:underline">Tambah</a>
+        <div class="flex items-center justify-between gap-4">
+            <div>
+                <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100 leading-tight">Kategori</h2>
+                <div class="text-sm text-slate-500 dark:text-slate-400">Kelompokkan alat berdasarkan jenis agar mudah dicari.</div>
+            </div>
+            <a href="{{ route('admin.categories.create') }}" class="ss-link text-sm">Tambah</a>
         </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <x-flash />
+    <div class="ss-container">
+        <x-flash />
 
-            <form class="mb-4" method="GET">
-                <x-text-input name="q" value="{{ request('q') }}" placeholder="Cari kategori..." class="w-full sm:w-80" />
-            </form>
-
-            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg overflow-hidden">
-                <div class="p-6">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full text-sm">
-                            <thead class="text-left text-gray-500">
-                                <tr>
-                                    <th class="py-2">Nama</th>
-                                    <th class="py-2">Deskripsi</th>
-                                    <th class="py-2 w-40">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                                @foreach ($categories as $category)
-                                    <tr>
-                                        <td class="py-2 font-medium text-gray-900 dark:text-gray-100">{{ $category->name }}</td>
-                                        <td class="py-2 text-gray-700 dark:text-gray-300">{{ \Illuminate\Support\Str::limit($category->description, 60) }}</td>
-                                        <td class="py-2">
-                                            <a href="{{ route('admin.categories.edit', $category) }}" class="text-indigo-600 hover:underline">Edit</a>
-                                            <form class="inline" method="POST" action="{{ route('admin.categories.destroy', $category) }}" onsubmit="return confirm('Hapus kategori?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="text-red-600 hover:underline ml-3" type="submit">Hapus</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="mt-4">{{ $categories->links() }}</div>
+        <div class="ss-card p-4 mb-4">
+            <form class="grid grid-cols-1 sm:grid-cols-3 gap-3" method="GET">
+                <div class="sm:col-span-2">
+                    <x-input-label for="q" value="Cari" />
+                    <x-text-input id="q" name="q" value="{{ request('q') }}" placeholder="Cari kategori..." class="mt-1 block w-full" />
                 </div>
+                <div class="flex items-end gap-2">
+                    <x-primary-button type="submit">Cari</x-primary-button>
+                    <a href="{{ route('admin.categories.index') }}" class="ss-link text-sm">Reset</a>
+                </div>
+            </form>
+            <div class="mt-3 text-xs text-slate-500 dark:text-slate-400">Menampilkan {{ $categories->count() }} dari {{ $categories->total() }} data.</div>
+        </div>
+
+        <div class="ss-table-wrap">
+            <div class="p-6">
+                <div class="overflow-x-auto">
+                    <table class="ss-table">
+                        <thead>
+                            <tr>
+                                <th class="ss-th">Nama</th>
+                                <th class="ss-th">Deskripsi</th>
+                                <th class="ss-th w-44">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200/70 dark:divide-slate-800/70">
+                            @forelse ($categories as $category)
+                                <tr class="ss-tr">
+                                    <td class="ss-td font-medium text-slate-900 dark:text-slate-100">{{ $category->name }}</td>
+                                    <td class="ss-td">{{ \Illuminate\Support\Str::limit($category->description, 80) }}</td>
+                                    <td class="ss-td">
+                                        <a href="{{ route('admin.categories.edit', $category) }}" class="ss-link">Edit</a>
+                                        <form class="inline" method="POST" action="{{ route('admin.categories.destroy', $category) }}" onsubmit="return confirm('Hapus kategori?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="ml-3 text-rose-600 hover:underline" type="submit">Hapus</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="3">
+                                        <x-empty-state title="Tidak ada kategori" description="Buat kategori agar alat lebih terorganisir.">
+                                            <a href="{{ route('admin.categories.create') }}" class="ss-link text-sm">Tambah kategori</a>
+                                        </x-empty-state>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-4">{{ $categories->links() }}</div>
             </div>
         </div>
     </div>
