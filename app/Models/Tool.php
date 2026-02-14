@@ -14,6 +14,7 @@ class Tool extends Model
     protected $fillable = [
         'category_id',
         'name',
+        'brand',
         'description',
     ];
 

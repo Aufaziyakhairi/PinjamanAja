@@ -27,6 +27,10 @@
                             <x-text-input id="name" name="name" value="{{ old('name') }}" class="mt-1 block w-full" required />
                         </div>
                         <div>
+                            <x-input-label for="brand" value="Merek / Brand" />
+                            <x-text-input id="brand" name="brand" value="{{ old('brand') }}" class="mt-1 block w-full" />
+                        </div>
+                        <div>
                             <x-input-label for="description" value="Deskripsi" />
                             <textarea id="description" name="description" class="ss-input mt-1" rows="4">{{ old('description') }}</textarea>
                             <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">Opsional. Jelaskan fungsi/kondisi alat.</div>

@@ -24,6 +24,10 @@
                             <x-text-input id="name" name="name" value="{{ old('name', $tool->name) }}" class="mt-1 block w-full" required />
                         </div>
                         <div>
+                            <x-input-label for="brand" value="Merek / Brand" />
+                            <x-text-input id="brand" name="brand" value="{{ old('brand', $tool->brand) }}" class="mt-1 block w-full" />
+                        </div>
+                        <div>
                             <x-input-label for="description" value="Deskripsi" />
                             <textarea id="description" name="description" class="mt-1 block w-full rounded border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100" rows="4">{{ old('description', $tool->description) }}</textarea>
                         </div>

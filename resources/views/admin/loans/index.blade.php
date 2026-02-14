@@ -53,6 +53,7 @@
                                         'pending' => 'warn',
                                         'approved' => 'success',
                                         'rejected' => 'danger',
+                                        'cancelled' => 'neutral',
                                         'returned' => 'neutral',
                                         default => 'neutral',
                                     };

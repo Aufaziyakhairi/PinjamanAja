@@ -91,4 +91,24 @@ class LoanRequestController extends Controller
 
         return redirect()->route('peminjam.loans.index')->with('status', 'Pengajuan peminjaman dikirim.');
     }
+
+    public function cancel(Request $request, Loan $loan): RedirectResponse
+    {
+        if ($loan->user_id !== $request->user()->id) {
+            abort(403);
+        }
+
+        if ($loan->status !== LoanStatus::Pending) {
+            return back()->withErrors([
+                'loan' => 'Hanya pengajuan dengan status pending yang bisa dibatalkan.',
+            ]);
+        }
+
+        $loan->status = LoanStatus::Cancelled;
+        $loan->save();
+
+        ActivityLogger::log('loan.cancelled', $loan, [], $request);
+
+        return back()->with('status', 'Pengajuan peminjaman dibatalkan.');
+    }
 }

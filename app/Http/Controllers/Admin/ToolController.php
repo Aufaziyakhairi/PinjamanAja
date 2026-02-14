@@ -55,6 +55,7 @@ class ToolController extends Controller
         $validated = $request->validate([
             'category_id' => ['required', 'exists:categories,id'],
             'name' => ['required', 'string', 'max:255'],
+            'brand' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
         ]);
 
@@ -89,6 +90,7 @@ class ToolController extends Controller
         $validated = $request->validate([
             'category_id' => ['required', 'exists:categories,id'],
             'name' => ['required', 'string', 'max:255'],
+            'brand' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
         ]);
 

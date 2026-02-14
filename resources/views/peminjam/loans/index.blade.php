@@ -39,6 +39,7 @@
                                             'pending' => 'warn',
                                             'approved' => 'success',
                                             'rejected' => 'danger',
+                                            'cancelled' => 'neutral',
                                             'returned' => 'neutral',
                                             default => 'neutral',
                                         };
@@ -82,6 +83,11 @@
                                                 <form class="inline" method="POST" action="{{ route('peminjam.returns.store', $loan) }}" onsubmit="return confirm('Ajukan pengembalian?')">
                                                     @csrf
                                                     <button class="ml-3 ss-link" type="submit">Ajukan Return</button>
+                                                </form>
+                                            @elseif($loanStatus === 'pending')
+                                                <form class="inline" method="POST" action="{{ route('peminjam.loans.cancel', $loan) }}" onsubmit="return confirm('Batalkan pengajuan ini?')">
+                                                    @csrf
+                                                    <button class="ml-3 ss-link text-rose-600" type="submit">Batalkan</button>
                                                 </form>
                                             @endif
                                         </td>

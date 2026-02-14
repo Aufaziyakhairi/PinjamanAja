@@ -65,6 +65,8 @@ Route::middleware(['auth', 'role:peminjam'])->prefix('peminjam')->name('peminjam
 
     Route::get('loans/{loan}', [LoanRequestController::class, 'show'])->name('loans.show');
 
+    Route::post('loans/{loan}/cancel', [LoanRequestController::class, 'cancel'])->name('loans.cancel');
+
     Route::post('loans/{loan}/return-request', [ReturnRequestController::class, 'store'])->name('returns.store');
 });
 
